@@ -62,17 +62,46 @@
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link">Izmeni</button>
+        <button class="button is-link" @click="editProduct">Izmeni</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapMutations } from "vuex";
+import { api } from "@/axios/api";
 export default {
+  data() {
+    return {
+      id: null
+    };
+  },
+  created() {
+    this.id = this.product.idProizvoda;
+  },
   computed: {
     ...mapState("modal", ["product"])
+  },
+  methods: {
+    ...mapMutations("notification", ["addNotification"]),
+    editProduct() {
+      api
+        .editProduct(this.id, { ...this.product })
+        .then(res => {
+          console.log(res);
+          this.addNotification({
+            type: "is-success",
+            message: "Uspešno ste izmenili proizvod sa šifrom " + this.id
+          });
+        })
+        .catch(error => {
+          this.addNotification({
+            type: "is-danger",
+            message: error.response.data.message
+          });
+        });
+    }
   }
 };
 </script>
