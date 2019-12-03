@@ -1,18 +1,25 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <tabs-menu :tabs="tabs"></tabs-menu>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
+import TabsMenu from '@/components/TabsMenu';
 
 export default {
-  name: "home",
+  name: 'home',
   components: {
-    HelloWorld
-  }
+    TabsMenu,
+  },
+  data() {
+    return {
+      tabs: [
+        { name: 'Proizvod', icon: 'fas fa-shopping-cart' },
+        { name: 'Lek', icon: 'fas fa-capsules' },
+        { name: 'Tip pakovanja', icon: 'fas fa-box-open' },
+      ],
+    };
+  },
 };
 </script>

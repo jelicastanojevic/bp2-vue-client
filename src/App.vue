@@ -1,14 +1,39 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <transition
+      appear
+      appear-active-class="animated faster fadeIn"
+      mode="out-in"
+      enter-active-class="animated faster fadeIn"
+      leave-active-class="animated faster fadeOut"
+    >
+      <!--<keep-alive>-->
+      <router-view />
+      <!--</keep-alive>-->
+    </transition>
+
+    <modal v-show="modalVisible" />
   </div>
 </template>
 
+<script>
+import Modal from "@/components/Modal";
+import { mapState } from "vuex";
+export default {
+  components: {
+    Modal
+  },
+  computed: {
+    ...mapState("modal", ["modalVisible"])
+  }
+};
+</script>
+
 <style lang="scss">
+@import url("./assets/css/animate.css");
+// @import url("../node_modules/bulma/css/bulma.css");
+// @import url('https://use.fontawesome.com/releases/v5.6.1/css/all.css');
+
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
