@@ -10,4 +10,13 @@ export const api = {
   getAllTypesOfPackages: () => {
     return axios.get('/packages');
   },
+  addProduct: product => {
+    return axios.post('/products', product);
+  },
+  addDrug: drug => {
+    return axios.post('/drugs', drug);
+  },
+  addPackage: packageType => {
+    return axios.post('/packages', packageType);
+  },
 };

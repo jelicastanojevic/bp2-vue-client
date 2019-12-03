@@ -26,13 +26,16 @@
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link">Dodaj</button>
+        <button class="button is-link" @click="addPackage">Dodaj</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { api } from "@/axios/api";
+import { mapMutations } from "vuex";
+
 export default {
   data() {
     return {
@@ -41,6 +44,26 @@ export default {
         nazivTipaPakovanja: null
       }
     };
+  },
+  methods: {
+    ...mapMutations("notification", ["addNotification"]),
+    addPackage() {
+      api
+        .addPackage({ ...this.packageType })
+        .then(({ data }) => {
+          this.addNotification({
+            type: "is-success",
+            message:
+              "Uspešno ste uneli novi tip pakovanja sa šifrom " + data.insertId
+          });
+        })
+        .catch(error => {
+          this.addNotification({
+            type: "is-danger",
+            message: error.response.data.message
+          });
+        });
+    }
   }
 };
 </script>
