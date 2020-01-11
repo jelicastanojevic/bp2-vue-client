@@ -8,6 +8,7 @@
           type="text"
           placeholder="Text input"
           v-model="drug.idLeka"
+          readonly
         />
       </div>
     </div>
@@ -97,8 +98,11 @@ export default {
     ...mapState("modal", ["drug"])
   },
   methods: {
+    ...mapMutations("table", ["setTableData", "setTableColumns"]),
+    ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
     editDrug() {
+      this.transformDrug();
       api
         .editDrug(this.id, { ...this.drug })
         .then(res => {
@@ -107,6 +111,16 @@ export default {
             type: "is-success",
             message: "Uspešno ste izmenili lek sa šifrom " + this.id
           });
+
+          api
+            .getAllDrugs()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+
+          this.closeModal();
         })
         .catch(error => {
           this.addNotification({
@@ -114,6 +128,28 @@ export default {
             message: error.response.data.message
           });
         });
+    },
+    transformDrug() {
+      if (this.drug.dozaPoPakovanju === "") {
+        this.drug.dozaPoPakovanju = null;
+      }
+      if (this.drug.idLeka === "") {
+        this.drug.idLeka = null;
+      }
+      if (this.drug.komadPoPakovanju === "") {
+        this.drug.komadPoPakovanju = null;
+      }
+      if (this.drug.jkl === "") {
+        this.drug.jkl = null;
+      }
+
+      if (this.drug.idJediniceMere === "") {
+        this.drug.idJediniceMere = null;
+      }
+
+      if (this.drug.idTipaPakovanja === "") {
+        this.drug.idTipaPakovanja = null;
+      }
     }
   }
 };

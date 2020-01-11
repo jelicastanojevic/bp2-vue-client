@@ -54,7 +54,10 @@ export default {
       "showModal",
       "setPackage",
       "setProduct",
-      "setDrug"
+      "setDrug",
+      "setPrice",
+      "setState",
+      "setSupplier"
     ]),
     selectTab(i) {
       switch (i) {
@@ -86,6 +89,33 @@ export default {
             })
             .catch(() => {});
           break;
+        case 3:
+          api
+            .getAllPrices()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          break;
+        case 4:
+          api
+            .getAllStates()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          break;
+        case 5:
+          api
+            .getAllSuppliers()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          break;
       }
 
       this.selectedTab = i;
@@ -101,12 +131,22 @@ export default {
         case 2:
           this.showModal("ModalContentAddPackage");
           break;
+        case 3:
+          this.showModal("price/ModalContentAddPrice");
+          break;
+        case 4:
+          this.showModal("state/ModalContentAddState");
+          break;
+        case 5:
+          this.showModal("supplier/ModalContentAddSupplier");
+          break;
       }
     },
     editRow(row) {
       switch (this.selectedTab) {
         case 0:
           this.showModal("ModalContentEditProduct");
+          console.log(row);
           this.setProduct(row);
           break;
         case 1:
@@ -116,6 +156,18 @@ export default {
         case 2:
           this.showModal("ModalContentEditPackage");
           this.setPackage(row);
+          break;
+        case 3:
+          this.showModal("price/ModalContentEditPrice");
+          this.setPrice(row);
+          break;
+        case 4:
+          this.showModal("state/ModalContentEditState");
+          this.setState(row);
+          break;
+        case 5:
+          this.showModal("supplier/ModalContentEditSupplier");
+          this.setSupplier(row);
           break;
       }
     },
@@ -132,6 +184,18 @@ export default {
         case 2:
           this.showModal("ModalContentDeletePackage");
           this.setPackage(row);
+          break;
+        case 3:
+          this.showModal("price/ModalContentDeletePrice");
+          this.setPrice(row);
+          break;
+        case 4:
+          this.showModal("state/ModalContentDeleteState");
+          this.setState(row);
+          break;
+        case 5:
+          this.showModal("supplier/ModalContentDeleteSupplier");
+          this.setSupplier(row);
           break;
       }
     }

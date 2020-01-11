@@ -19,6 +19,8 @@ export default {
     ...mapState("modal", ["packageType"])
   },
   methods: {
+    ...mapMutations("table", ["setTableData", "setTableColumns"]),
+    ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
     deletePackage() {
       api
@@ -31,6 +33,16 @@ export default {
               "Uspešno ste obrisali tip pakovanja sa šifrom " +
               this.packageType.idTipaPakovanja
           });
+
+          api
+            .getAllTypesOfPackages()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+
+          this.closeModal();
         })
         .catch(error => {
           this.addNotification({

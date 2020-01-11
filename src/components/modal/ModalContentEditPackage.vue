@@ -8,6 +8,7 @@
           type="text"
           placeholder="Text input"
           v-model="packageType.idTipaPakovanja"
+          readonly
         />
       </div>
     </div>
@@ -48,8 +49,11 @@ export default {
     ...mapState("modal", ["packageType"])
   },
   methods: {
+    ...mapMutations("table", ["setTableData", "setTableColumns"]),
+    ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
     editPackage() {
+      this.transformPackage();
       api
         .editPackage(this.id, { ...this.packageType })
         .then(res => {
@@ -58,6 +62,16 @@ export default {
             type: "is-success",
             message: "Uspešno ste izmenili tip pakovanja sa šifrom " + this.id
           });
+
+          api
+            .getAllTypesOfPackages()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+
+          this.closeModal();
         })
         .catch(error => {
           this.addNotification({
@@ -65,6 +79,14 @@ export default {
             message: error.response.data.message
           });
         });
+    },
+    transformPackage() {
+      if (this.packageType.idTipaPakovanja === "") {
+        this.packageType.idTipaPakovanja = null;
+      }
+      if (this.packageType.nazivTipaPakovanja === "") {
+        this.packageType.nazivTipaPakovanja = null;
+      }
     }
   }
 };

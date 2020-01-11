@@ -8,6 +8,7 @@
           type="text"
           placeholder="Text input"
           v-model="product.idProizvoda"
+          readonly
         />
       </div>
     </div>
@@ -84,8 +85,11 @@ export default {
     ...mapState("modal", ["product"])
   },
   methods: {
+    ...mapMutations("table", ["setTableData", "setTableColumns"]),
+    ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
     editProduct() {
+      this.transformProduct();
       api
         .editProduct(this.id, { ...this.product })
         .then(res => {
@@ -94,6 +98,16 @@ export default {
             type: "is-success",
             message: "Uspešno ste izmenili proizvod sa šifrom " + this.id
           });
+
+          api
+            .getAllProducts()
+            .then(res => {
+              console.log(res);
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          this.closeModal();
         })
         .catch(error => {
           this.addNotification({
@@ -101,6 +115,23 @@ export default {
             message: error.response.data.message
           });
         });
+    },
+    transformProduct() {
+      if (this.product.idProizvoda === "") {
+        this.product.idProizvoda = null;
+      }
+      if (this.product.nazivProizvoda === "") {
+        this.product.nazivProizvoda = null;
+      }
+      if (this.product.trenutnaCena === "") {
+        this.product.trenutnaCena = null;
+      }
+      if (this.product.kolicina === "") {
+        this.product.kolicina = null;
+      }
+      if (this.product.nazivTipaPakovanja === "") {
+        this.product.nazivTipaPakovanja = null;
+      }
     }
   }
 };

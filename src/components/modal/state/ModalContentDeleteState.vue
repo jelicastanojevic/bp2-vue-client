@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="subtitle is-4">
-      Da li sigurno želite da obrišete lek sa šifrom {{ drug.idLeka }}?
+      Da li sigurno želite da obrišete stanje proizvoda {{ state.idProizvoda }}?
     </div>
     <div class="control">
-      <button class="button is-link" @click="deleteDrug">Obriši</button>
+      <button class="button is-link" @click="deleteState">Obriši</button>
     </div>
   </div>
 </template>
@@ -14,24 +14,29 @@ import { mapState, mapMutations } from "vuex";
 import { api } from "@/axios/api";
 export default {
   computed: {
-    ...mapState("modal", ["drug"])
+    ...mapState("modal", ["state"])
   },
   methods: {
     ...mapMutations("table", ["setTableData", "setTableColumns"]),
     ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
-    deleteDrug() {
+    deleteState() {
       api
-        .deleteDrug(this.drug.idLeka)
+        .deleteState(this.state.idProizvoda, {
+          datumPromene: this.state.datumPromene,
+          idSkladisneJedinice: this.state.idSkladisneJedinice
+        })
         .then(res => {
           console.log(res);
           this.addNotification({
             type: "is-success",
-            message: "Uspešno ste obrisali lek sa šifrom " + this.drug.idLeka
+            message:
+              "Uspešno ste obrisali stanje proizvoda sa šifrom " +
+              this.state.idProizvoda
           });
 
           api
-            .getAllDrugs()
+            .getAllPrices()
             .then(res => {
               this.setTableColumns(res.data.tableColumns);
               this.setTableData(res.data.tableData);

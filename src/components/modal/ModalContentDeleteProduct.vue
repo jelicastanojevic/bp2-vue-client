@@ -18,6 +18,8 @@ export default {
     ...mapState("modal", ["product"])
   },
   methods: {
+    ...mapMutations("table", ["setTableData", "setTableColumns"]),
+    ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
     deleteProduct() {
       api
@@ -30,6 +32,16 @@ export default {
               "Uspešno ste obrisali proizvod sa šifrom " +
               this.product.idProizvoda
           });
+
+          api
+            .getAllProducts()
+            .then(res => {
+              console.log(res);
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          this.closeModal();
         })
         .catch(error => {
           this.addNotification({

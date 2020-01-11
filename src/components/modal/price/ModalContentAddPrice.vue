@@ -1,32 +1,44 @@
 <template>
   <div>
     <div class="field">
-      <label class="label">Šifra</label>
+      <label class="label">Šifra proizvoda</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="packageType.idTipaPakovanja"
+          v-model="price.idProizvoda"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Naziv tipa pakovanja</label>
+      <label class="label">Cena proizvoda</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="packageType.nazivTipaPakovanja"
+          v-model="price.cena"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Datum</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          placeholder="Text input"
+          v-model="price.datumPromene"
         />
       </div>
     </div>
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link" @click="addPackage">Dodaj</button>
+        <button class="button is-link" @click="addPrice">Dodaj</button>
       </div>
     </div>
   </div>
@@ -39,9 +51,10 @@ import { mapMutations } from "vuex";
 export default {
   data() {
     return {
-      packageType: {
-        idTipaPakovanja: null,
-        nazivTipaPakovanja: null
+      price: {
+        idProizvoda: null,
+        datumPromene: null,
+        cena: null
       }
     };
   },
@@ -49,18 +62,18 @@ export default {
     ...mapMutations("table", ["setTableData", "setTableColumns"]),
     ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
-    addPackage() {
-      this.transformPackage();
+    addPrice() {
+      this.transformPrice();
       api
-        .addPackage({ ...this.packageType })
+        .addPrice({ ...this.price })
         .then(() => {
           this.addNotification({
             type: "is-success",
-            message: "Uspešno ste uneli novi tip pakovanja"
+            message: "Uspešno ste uneli novu cenu "
           });
 
           api
-            .getAllTypesOfPackages()
+            .getAllPrices()
             .then(res => {
               this.setTableColumns(res.data.tableColumns);
               this.setTableData(res.data.tableData);
@@ -76,12 +89,15 @@ export default {
           });
         });
     },
-    transformPackage() {
-      if (this.packageType.idTipaPakovanja === "") {
-        this.packageType.idTipaPakovanja = null;
+    transformPrice() {
+      if (this.price.idProizvoda === "") {
+        this.price.idProizvoda = null;
       }
-      if (this.packageType.nazivTipaPakovanja === "") {
-        this.packageType.nazivTipaPakovanja = null;
+      if (this.price.datumPromene === "") {
+        this.price.datumPromene = null;
+      }
+      if (this.price.cena === "") {
+        this.price.cena = null;
       }
     }
   }

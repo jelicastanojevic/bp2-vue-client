@@ -1,111 +1,108 @@
 <template>
   <div>
     <div class="field">
-      <label class="label">Šifra</label>
+      <label class="label">Šifra proizvoda</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.idProizvoda"
+          v-model="state.idProizvoda"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Naziv</label>
+      <label class="label">Šifra skladišta</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.nazivProizvoda"
+          v-model="state.idSkladisneJedinice"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Trenutna cena</label>
+      <label class="label">Količina proizvoda</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.trenutnaCena"
+          v-model="state.kolicina"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Količina</label>
+      <label class="label">Datum promene</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.kolicina"
-        />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Naziv tipa pakovanja</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="Text input"
-          v-model="product.nazivTipaPakovanja"
+          v-model="state.datumPromene"
         />
       </div>
     </div>
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link" @click="addProduct">Dodaj</button>
+        <button class="button is-link" @click="editState">Izmeni</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
 import { api } from "@/axios/api";
-import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      product: {
-        idProizvoda: null,
-        nazivProizvoda: null,
-        trenutnaCena: null,
-        kolicina: null,
-        nazivTipaPakovanja: null
-      }
+      id: null,
+      idProizvoda: null,
+      idSkladisneJedinice: null
     };
+  },
+  created() {
+    this.id = this.state.idProizvoda;
+    this.idSkladisneJedinice = this.state.idSkladisneJedinice;
+    this.datumPromene = this.state.datumPromene;
+  },
+  computed: {
+    ...mapState("modal", ["state"])
   },
   methods: {
     ...mapMutations("table", ["setTableData", "setTableColumns"]),
     ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
-    addProduct() {
-      this.transformProduct();
+    editState() {
+      this.transformState();
       api
-        .addProduct({ ...this.product })
-        .then(() => {
+        .editState(this.id, {
+          idSkladisneJedinice: this.idSkladisneJedinice,
+          datumPromene: this.datumPromene
+        })
+        .then(res => {
+          console.log(res);
           this.addNotification({
             type: "is-success",
-            message: "Uspešno ste uneli novi proizvod "
+            message:
+              "Uspešno ste izmenili stanje proizvoda sa šifrom " + this.id
           });
 
           api
-            .getAllProducts()
+            .getAllStates()
             .then(res => {
-              console.log(res);
               this.setTableColumns(res.data.tableColumns);
               this.setTableData(res.data.tableData);
             })
             .catch(() => {});
+
           this.closeModal();
         })
         .catch(error => {
@@ -115,21 +112,18 @@ export default {
           });
         });
     },
-    transformProduct() {
-      if (this.product.idProizvoda === "") {
-        this.product.idProizvoda = null;
+    transformState() {
+      if (this.price.idProizvoda === "") {
+        this.price.idProizvoda = null;
       }
-      if (this.product.nazivProizvoda === "") {
-        this.product.nazivProizvoda = null;
+      if (this.price.idSkladisneJedinice === "") {
+        this.price.idSkladisneJedinice = null;
       }
-      if (this.product.trenutnaCena === "") {
-        this.product.trenutnaCena = null;
+      if (this.price.datumPromene === "") {
+        this.price.datumPromene = null;
       }
-      if (this.product.kolicina === "") {
-        this.product.kolicina = null;
-      }
-      if (this.product.nazivTipaPakovanja === "") {
-        this.product.nazivTipaPakovanja = null;
+      if (this.price.kolicina === "") {
+        this.price.kolicina = null;
       }
     }
   }

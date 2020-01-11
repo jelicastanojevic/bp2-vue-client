@@ -98,15 +98,28 @@ export default {
     };
   },
   methods: {
+    ...mapMutations("table", ["setTableData", "setTableColumns"]),
+    ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
     addDrug() {
+      this.transformDrug();
       api
         .addDrug({ ...this.drug })
-        .then(({ data }) => {
+        .then(() => {
           this.addNotification({
             type: "is-success",
-            message: "Uspešno ste uneli novi lek sa šifrom " + data.insertId
+            message: "Uspešno ste uneli novi lek "
           });
+
+          api
+            .getAllDrugs()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+
+          this.closeModal();
         })
         .catch(error => {
           this.addNotification({
@@ -114,6 +127,28 @@ export default {
             message: error.response.data.message
           });
         });
+    },
+    transformDrug() {
+      if (this.drug.dozaPoPakovanju === "") {
+        this.drug.dozaPoPakovanju = null;
+      }
+      if (this.drug.idLeka === "") {
+        this.drug.idLeka = null;
+      }
+      if (this.drug.komadPoPakovanju === "") {
+        this.drug.komadPoPakovanju = null;
+      }
+      if (this.drug.jkl === "") {
+        this.drug.jkl = null;
+      }
+
+      if (this.drug.idJediniceMere === "") {
+        this.drug.idJediniceMere = null;
+      }
+
+      if (this.drug.idTipaPakovanja === "") {
+        this.drug.idTipaPakovanja = null;
+      }
     }
   }
 };

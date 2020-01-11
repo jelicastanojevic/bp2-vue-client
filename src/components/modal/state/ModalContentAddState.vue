@@ -1,68 +1,56 @@
 <template>
   <div>
     <div class="field">
-      <label class="label">Šifra</label>
+      <label class="label">Šifra proizvoda</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.idProizvoda"
+          v-model="state.idProizvoda"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Naziv</label>
+      <label class="label">Šifra skladišta</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.nazivProizvoda"
+          v-model="state.idSkladisneJedinice"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Trenutna cena</label>
+      <label class="label">Količina proizvoda</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.trenutnaCena"
+          v-model="state.kolicina"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Količina</label>
+      <label class="label">Datum promene</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="product.kolicina"
-        />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Naziv tipa pakovanja</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="Text input"
-          v-model="product.nazivTipaPakovanja"
+          v-model="state.datumPromene"
         />
       </div>
     </div>
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link" @click="addProduct">Dodaj</button>
+        <button class="button is-link" @click="addState">Dodaj</button>
       </div>
     </div>
   </div>
@@ -75,12 +63,11 @@ import { mapMutations } from "vuex";
 export default {
   data() {
     return {
-      product: {
+      state: {
         idProizvoda: null,
-        nazivProizvoda: null,
-        trenutnaCena: null,
-        kolicina: null,
-        nazivTipaPakovanja: null
+        idSkladisneJedinice: null,
+        datumPromene: null,
+        kolicina: null
       }
     };
   },
@@ -88,24 +75,24 @@ export default {
     ...mapMutations("table", ["setTableData", "setTableColumns"]),
     ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
-    addProduct() {
-      this.transformProduct();
+    addState() {
+      this.transformState();
       api
-        .addProduct({ ...this.product })
+        .addState({ ...this.state })
         .then(() => {
           this.addNotification({
             type: "is-success",
-            message: "Uspešno ste uneli novi proizvod "
+            message: "Uspešno ste uneli novu kolicinu "
           });
 
           api
-            .getAllProducts()
+            .getAllStates()
             .then(res => {
-              console.log(res);
               this.setTableColumns(res.data.tableColumns);
               this.setTableData(res.data.tableData);
             })
             .catch(() => {});
+
           this.closeModal();
         })
         .catch(error => {
@@ -115,21 +102,18 @@ export default {
           });
         });
     },
-    transformProduct() {
-      if (this.product.idProizvoda === "") {
-        this.product.idProizvoda = null;
+    transformState() {
+      if (this.price.idProizvoda === "") {
+        this.price.idProizvoda = null;
       }
-      if (this.product.nazivProizvoda === "") {
-        this.product.nazivProizvoda = null;
+      if (this.price.idSkladisneJedinice === "") {
+        this.price.idSkladisneJedinice = null;
       }
-      if (this.product.trenutnaCena === "") {
-        this.product.trenutnaCena = null;
+      if (this.price.datumPromene === "") {
+        this.price.datumPromene = null;
       }
-      if (this.product.kolicina === "") {
-        this.product.kolicina = null;
-      }
-      if (this.product.nazivTipaPakovanja === "") {
-        this.product.nazivTipaPakovanja = null;
+      if (this.price.kolicina === "") {
+        this.price.kolicina = null;
       }
     }
   }

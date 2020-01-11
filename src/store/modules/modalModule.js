@@ -5,6 +5,9 @@ export default {
     product: null,
     drug: null,
     packageType: null,
+    price: null,
+    state: null,
+    supplier: null,
   },
   mutations: {
     showModal(state, componentName) {
@@ -28,6 +31,15 @@ export default {
     },
     setPackage(state, packageTypee) {
       state.packageType = packageTypee;
+    },
+    setPrice(state, price) {
+      state.price = price;
+    },
+    setState(state, statee) {
+      state.state = statee;
+    },
+    setSupplier(state, supplier) {
+      state.supplier = supplier;
     },
   },
   namespaced: true,

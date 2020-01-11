@@ -10,6 +10,15 @@ export const api = {
   getAllTypesOfPackages: () => {
     return axios.get('/packages');
   },
+  getAllPrices: () => {
+    return axios.get('/prices');
+  },
+  getAllStates: () => {
+    return axios.get('/states');
+  },
+  getAllSuppliers: () => {
+    return axios.get('/suppliers');
+  },
   addProduct: product => {
     return axios.post('/products', product);
   },
@@ -18,6 +27,15 @@ export const api = {
   },
   addPackage: packageType => {
     return axios.post('/packages', packageType);
+  },
+  addPrice: price => {
+    return axios.post('/prices', price);
+  },
+  addState: state => {
+    return axios.post('/states', state);
+  },
+  addSupplier: supplier => {
+    return axios.post('/suppliers', supplier);
   },
   editProduct: (id, product) => {
     return axios.put(`/products/${id}`, product);
@@ -28,6 +46,15 @@ export const api = {
   editPackage: (id, packageType) => {
     return axios.put(`/packages/${id}`, packageType);
   },
+  editPrice: (id, price) => {
+    return axios.put(`/prices/${id}`, price);
+  },
+  editState: (id, state) => {
+    return axios.put(`/states/${id}`, state);
+  },
+  editSupplier: (id, supplier) => {
+    return axios.put(`/suppliers/${id}`, supplier);
+  },
   deleteProduct: id => {
     return axios.delete(`/products/${id}`);
   },
@@ -36,5 +63,14 @@ export const api = {
   },
   deletePackage: id => {
     return axios.delete(`/packages/${id}`);
+  },
+  deletePrice: (id, price) => {
+    return axios.delete(`/prices/${id}`, { data: price });
+  },
+  deleteState: (id, state) => {
+    return axios.delete(`/states/${id}`, { data: state });
+  },
+  deleteSupplier: id => {
+    return axios.delete(`/suppliers/${id}`);
   },
 };
