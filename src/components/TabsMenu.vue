@@ -57,7 +57,9 @@ export default {
       "setDrug",
       "setPrice",
       "setState",
-      "setSupplier"
+      "setSupplier",
+      "setCatalogue",
+      "setEmployee"
     ]),
     selectTab(i) {
       switch (i) {
@@ -116,6 +118,24 @@ export default {
             })
             .catch(() => {});
           break;
+        case 6:
+          api
+            .getAllEmployees()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          break;
+        case 7:
+          api
+            .getAllCatalogues()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          break;
       }
 
       this.selectedTab = i;
@@ -139,6 +159,12 @@ export default {
           break;
         case 5:
           this.showModal("supplier/ModalContentAddSupplier");
+          break;
+        case 6:
+          this.showModal("employee/ModalContentAddEmployee");
+          break;
+        case 7:
+          this.showModal("catalogue/ModalContentAddCatalogue");
           break;
       }
     },
@@ -169,6 +195,14 @@ export default {
           this.showModal("supplier/ModalContentEditSupplier");
           this.setSupplier(row);
           break;
+        case 6:
+          this.showModal("employee/ModalContentEditEmployee");
+          this.setEmployee(row);
+          break;
+        case 7:
+          this.showModal("catalogue/ModalContentEditCatalogue");
+          this.setCatalogue(row);
+          break;
       }
     },
     deleteRow(row) {
@@ -196,6 +230,14 @@ export default {
         case 5:
           this.showModal("supplier/ModalContentDeleteSupplier");
           this.setSupplier(row);
+          break;
+        case 6:
+          this.showModal("employee/ModalContentDeleteEmployee");
+          this.setEmployee(row);
+          break;
+        case 7:
+          this.showModal("catalogue/ModalContentDeleteCatalogue");
+          this.setCatalogue(row);
           break;
       }
     }

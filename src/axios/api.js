@@ -19,6 +19,12 @@ export const api = {
   getAllSuppliers: () => {
     return axios.get('/suppliers');
   },
+  getAllCatalogues: () => {
+    return axios.get('/catalogues');
+  },
+  getAllEmployees: () => {
+    return axios.get('/employees');
+  },
   addProduct: product => {
     return axios.post('/products', product);
   },
@@ -36,6 +42,12 @@ export const api = {
   },
   addSupplier: supplier => {
     return axios.post('/suppliers', supplier);
+  },
+  addCatalogue: catalogue => {
+    return axios.post('/catalogues', catalogue);
+  },
+  addEmployee: employee => {
+    return axios.post('/employees', employee);
   },
   editProduct: (id, product) => {
     return axios.put(`/products/${id}`, product);
@@ -55,6 +67,12 @@ export const api = {
   editSupplier: (id, supplier) => {
     return axios.put(`/suppliers/${id}`, supplier);
   },
+  editCatalogue: (id, catalogue) => {
+    return axios.put(`/catalogues/${id}`, catalogue);
+  },
+  editEmployee: (id, employee) => {
+    return axios.put(`/employees/${id}`, employee);
+  },
   deleteProduct: id => {
     return axios.delete(`/products/${id}`);
   },
@@ -72,5 +90,11 @@ export const api = {
   },
   deleteSupplier: id => {
     return axios.delete(`/suppliers/${id}`);
+  },
+  deleteCatalogue: id => {
+    return axios.delete(`/catalogues/${id}`);
+  },
+  deleteEmployee: id => {
+    return axios.delete(`/employees/${id}`);
   },
 };

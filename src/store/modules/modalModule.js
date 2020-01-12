@@ -8,6 +8,8 @@ export default {
     price: null,
     state: null,
     supplier: null,
+    catalogue: null,
+    employee: null,
   },
   mutations: {
     showModal(state, componentName) {
@@ -40,6 +42,12 @@ export default {
     },
     setSupplier(state, supplier) {
       state.supplier = supplier;
+    },
+    setCatalogue(state, catalogue) {
+      state.catalogue = catalogue;
+    },
+    setEmployee(state, employee) {
+      state.employee = employee;
     },
   },
   namespaced: true,
