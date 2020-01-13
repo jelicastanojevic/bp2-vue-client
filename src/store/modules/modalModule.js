@@ -11,6 +11,7 @@ export default {
     catalogue: null,
     catalogueItem: null,
     employee: null,
+    itemProduct: null,
   },
   mutations: {
     showModal(state, componentName) {
@@ -52,6 +53,9 @@ export default {
     },
     setEmployee(state, employee) {
       state.employee = employee;
+    },
+    setItemProduct(state, itemProduct) {
+      state.itemProduct = itemProduct;
     },
   },
   namespaced: true,

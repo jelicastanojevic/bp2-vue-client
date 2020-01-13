@@ -61,6 +61,18 @@
       </div>
     </div>
 
+    <div class="field">
+      <label class="label">Šifra fabrike</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          placeholder="Text input"
+          v-model="product.idFabrike"
+        />
+      </div>
+    </div>
+
     <div class="field is-grouped">
       <div class="control">
         <button class="button is-link" @click="editProduct">Izmeni</button>

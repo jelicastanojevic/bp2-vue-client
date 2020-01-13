@@ -15,7 +15,7 @@ export default {
   methods: {
     ...mapMutations("notification", ["removeNotification"]),
     deleteNotification() {
-      setTimeout(this.removeNotification, 5000, this.notification);
+      setTimeout(this.removeNotification, 10000, this.notification);
     }
   }
 };

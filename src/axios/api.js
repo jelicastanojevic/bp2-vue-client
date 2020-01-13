@@ -28,6 +28,9 @@ export const api = {
   getAllEmployees: () => {
     return axios.get('/employees');
   },
+  getAllItemProducts: () => {
+    return axios.get('/item-products');
+  },
   addProduct: product => {
     return axios.post('/products', product);
   },
@@ -54,6 +57,9 @@ export const api = {
   },
   addEmployee: employee => {
     return axios.post('/employees', employee);
+  },
+  addItemProduct: itemProduct => {
+    return axios.post('/item-products', itemProduct);
   },
   editProduct: (id, product) => {
     return axios.put(`/products/${id}`, product);
@@ -82,6 +88,9 @@ export const api = {
   editEmployee: (id, employee) => {
     return axios.put(`/employees/${id}`, employee);
   },
+  editItemProduct: (id, itemProduct) => {
+    return axios.put(`/item-products/${id}`, itemProduct);
+  },
   deleteProduct: id => {
     return axios.delete(`/products/${id}`);
   },
@@ -108,5 +117,8 @@ export const api = {
   },
   deleteEmployee: id => {
     return axios.delete(`/employees/${id}`);
+  },
+  deleteItemProduct: (id, itemProduct) => {
+    return axios.delete(`/item-products/${id}`, { data: itemProduct });
   },
 };
