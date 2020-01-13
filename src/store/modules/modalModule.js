@@ -9,6 +9,7 @@ export default {
     state: null,
     supplier: null,
     catalogue: null,
+    catalogueItem: null,
     employee: null,
   },
   mutations: {
@@ -45,6 +46,9 @@ export default {
     },
     setCatalogue(state, catalogue) {
       state.catalogue = catalogue;
+    },
+    setCatalogueItem(state, catalogueItem) {
+      state.catalogueItem = catalogueItem;
     },
     setEmployee(state, employee) {
       state.employee = employee;

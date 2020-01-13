@@ -59,6 +59,7 @@ export default {
       "setState",
       "setSupplier",
       "setCatalogue",
+      "setCatalogueItem",
       "setEmployee"
     ]),
     selectTab(i) {
@@ -136,6 +137,15 @@ export default {
             })
             .catch(() => {});
           break;
+        case 8:
+          api
+            .getAllCatalogueItems()
+            .then(res => {
+              this.setTableColumns(res.data.tableColumns);
+              this.setTableData(res.data.tableData);
+            })
+            .catch(() => {});
+          break;
       }
 
       this.selectedTab = i;
@@ -165,6 +175,9 @@ export default {
           break;
         case 7:
           this.showModal("catalogue/ModalContentAddCatalogue");
+          break;
+        case 8:
+          this.showModal("catalogueItem/ModalContentAddCatalogueItem");
           break;
       }
     },
@@ -203,6 +216,10 @@ export default {
           this.showModal("catalogue/ModalContentEditCatalogue");
           this.setCatalogue(row);
           break;
+        case 8:
+          this.showModal("catalogueItem/ModalContentEditCatalogueItem");
+          this.setCatalogueItem(row);
+          break;
       }
     },
     deleteRow(row) {
@@ -238,6 +255,10 @@ export default {
         case 7:
           this.showModal("catalogue/ModalContentDeleteCatalogue");
           this.setCatalogue(row);
+          break;
+        case 8:
+          this.showModal("catalogueItem/ModalContentDeleteCatalogueItem");
+          this.setCatalogueItem(row);
           break;
       }
     }

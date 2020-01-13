@@ -22,6 +22,9 @@ export const api = {
   getAllCatalogues: () => {
     return axios.get('/catalogues');
   },
+  getAllCatalogueItems: () => {
+    return axios.get('/catalogue-items');
+  },
   getAllEmployees: () => {
     return axios.get('/employees');
   },
@@ -45,6 +48,9 @@ export const api = {
   },
   addCatalogue: catalogue => {
     return axios.post('/catalogues', catalogue);
+  },
+  addCatalogueItem: catalogueItem => {
+    return axios.post('/catalogue-items', catalogueItem);
   },
   addEmployee: employee => {
     return axios.post('/employees', employee);
@@ -70,6 +76,9 @@ export const api = {
   editCatalogue: (id, catalogue) => {
     return axios.put(`/catalogues/${id}`, catalogue);
   },
+  editCatalogueItem: (id, catalogueItem) => {
+    return axios.put(`/catalogue-items/${id}`, catalogueItem);
+  },
   editEmployee: (id, employee) => {
     return axios.put(`/employees/${id}`, employee);
   },
@@ -93,6 +102,9 @@ export const api = {
   },
   deleteCatalogue: id => {
     return axios.delete(`/catalogues/${id}`);
+  },
+  deleteCatalogueItem: (id, rbStavke) => {
+    return axios.delete(`/catalogue-items/${id}`, { data: rbStavke });
   },
   deleteEmployee: id => {
     return axios.delete(`/employees/${id}`);

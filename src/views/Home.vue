@@ -25,7 +25,8 @@ export default {
         { name: "Stanje", icon: "fas fa-archive" },
         { name: "Dobavljač", icon: "fas fa-truck" },
         { name: "Zaposleni", icon: "fas fa-user" },
-        { name: "Katalog", icon: "fas fa-copy" }
+        { name: "Katalog", icon: "fas fa-copy" },
+        { name: "Stavka kataloga", icon: "fas fa-item" }
       ]
     };
   }

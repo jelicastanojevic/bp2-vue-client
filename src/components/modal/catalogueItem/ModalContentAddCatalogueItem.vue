@@ -1,25 +1,25 @@
 <template>
   <div>
     <div class="field">
-      <label class="label">Šifra dobavljača</label>
+      <label class="label">Šifra kataloga</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="supplier.id"
+          v-model="catalogueItem.idKataloga"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">PIB</label>
+      <label class="label">Redni broj stavke</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="supplier.pib"
+          v-model="catalogueItem.rbStavke"
         />
       </div>
     </div>
@@ -31,124 +31,101 @@
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="supplier.naziv"
+          v-model="catalogueItem.naziv"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Adresa</label>
+      <label class="label">Cena</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="supplier.adresa"
+          v-model="catalogueItem.cena"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Email</label>
+      <label class="label">Jedinica mere</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="supplier.email"
+          v-model="catalogueItem.jm"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Matični broj</label>
+      <label class="label">Popust</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="supplier.maticniBroj"
+          v-model="catalogueItem.popust"
         />
       </div>
     </div>
 
     <div class="field">
-      <label class="label">Naziv banke</label>
+      <label class="label">Šifra fabrike</label>
       <div class="control">
         <input
           class="input"
           type="text"
           placeholder="Text input"
-          v-model="supplier.nazivBanke"
-        />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Broj računa</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="Text input"
-          v-model="supplier.brojRacuna"
-        />
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Telefon</label>
-      <div class="control">
-        <input
-          class="input"
-          type="text"
-          placeholder="Text input"
-          v-model="supplier.telefon"
+          v-model="catalogueItem.idFabrike"
         />
       </div>
     </div>
 
     <div class="field is-grouped">
       <div class="control">
-        <button class="button is-link" @click="editSupplier">Izmeni</button>
+        <button class="button is-link" @click="addCatalogueItem">Dodaj</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
 import { api } from "@/axios/api";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      id: null
+      catalogueItem: {
+        idKataloga: null,
+        rbStavke: null,
+        naziv: null,
+        cena: null,
+        jm: null,
+        popust: null,
+        idFabrike: null
+      }
     };
-  },
-  created() {
-    this.id = this.supplier.id;
-  },
-  computed: {
-    ...mapState("modal", ["supplier"])
   },
   methods: {
     ...mapMutations("table", ["setTableData", "setTableColumns"]),
     ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
-    editSupplier() {
-      this.transformSupplier();
+    addCatalogueItem() {
+      this.transformCatalogueItem();
       api
-        .editSupplier(this.id, { ...this.supplier })
-        .then(res => {
-          console.log(res);
+        .addCatalogueItem({ ...this.catalogueItem })
+        .then(() => {
           this.addNotification({
             type: "is-success",
-            message: "Uspešno ste izmenili dobavljača sa šifrom " + this.id
+            message: "Uspešno ste uneli novu stavku kataloga "
           });
 
           api
-            .getAllSuppliers()
+            .getAllCatalogueItems()
             .then(res => {
               this.setTableColumns(res.data.tableColumns);
               this.setTableData(res.data.tableData);
@@ -164,33 +141,24 @@ export default {
           });
         });
     },
-    transformSupplier() {
-      if (this.supplier.id === "") {
-        this.supplier.id = null;
+    transformCatalogueItem() {
+      if (this.catalogueItem.idKataloga === "") {
+        this.catalogueItem.idKataloga = null;
       }
-      if (this.supplier.pib === "") {
-        this.supplier.pib = null;
+      if (this.catalogueItem.rbStavke === "") {
+        this.catalogueItem.rbStavke = null;
       }
-      if (this.supplier.naziv === "") {
-        this.supplier.naziv = null;
+      if (this.catalogueItem.naziv === "") {
+        this.catalogueItem.naziv = null;
       }
-      if (this.supplier.adresa === "") {
-        this.supplier.adresa = null;
+      if (this.catalogueItem.cena === "") {
+        this.catalogueItem.cena = null;
       }
-      if (this.supplier.maticniBroj === "") {
-        this.supplier.maticniBroj = null;
+      if (this.catalogueItem.popust === "") {
+        this.catalogueItem.popust = null;
       }
-      if (this.supplier.email === "") {
-        this.supplier.email = null;
-      }
-      if (this.supplier.nazivBanke === "") {
-        this.supplier.nazivBanke = null;
-      }
-      if (this.supplier.brojRacuna === "") {
-        this.supplier.brojRacuna = null;
-      }
-      if (this.supplier.telefon === "") {
-        this.supplier.telefon = null;
+      if (this.catalogueItem.idFabrike === "") {
+        this.catalogueItem.idFabrike = null;
       }
     }
   }

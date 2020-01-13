@@ -1,10 +1,13 @@
 <template>
   <div>
     <div class="subtitle is-4">
-      Da li sigurno želite da obrišete dobavljača sa pibom {{ supplier.pib }}?
+      Da li sigurno želite da obrišete stavku kataloga sa šifrom
+      {{ catalogueItem.idKataloga }}?
     </div>
     <div class="control">
-      <button class="button is-link" @click="deleteSupplier">Obriši</button>
+      <button class="button is-link" @click="deleteCatalogueItem">
+        Obriši
+      </button>
     </div>
   </div>
 </template>
@@ -14,25 +17,28 @@ import { mapState, mapMutations } from "vuex";
 import { api } from "@/axios/api";
 export default {
   computed: {
-    ...mapState("modal", ["supplier"])
+    ...mapState("modal", ["catalogueItem"])
   },
   methods: {
     ...mapMutations("table", ["setTableData", "setTableColumns"]),
     ...mapMutations("modal", ["closeModal"]),
     ...mapMutations("notification", ["addNotification"]),
-    deleteSupplier() {
+    deleteCatalogueItem() {
       api
-        .deleteSupplier(this.supplier.pib)
+        .deleteCatalogueItem(this.catalogueItem.idKataloga, {
+          rbStavke: this.catalogueItem.rbStavke
+        })
         .then(res => {
           console.log(res);
           this.addNotification({
             type: "is-success",
             message:
-              "Uspešno ste obrisali dobavljača sa pibom " + this.supplier.pib
+              "Uspešno ste obrisali stavku kataloga sa šifrom " +
+              this.catalogueItem.idKataloga
           });
 
           api
-            .getAllSuppliers()
+            .getAllCatalogueItems()
             .then(res => {
               this.setTableColumns(res.data.tableColumns);
               this.setTableData(res.data.tableData);

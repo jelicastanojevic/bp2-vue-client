@@ -7,6 +7,18 @@
           class="input"
           type="text"
           placeholder="Text input"
+          v-model="supplier.id"
+        />
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">PIB</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          placeholder="Text input"
           v-model="supplier.pib"
         />
       </div>
@@ -114,6 +126,7 @@ export default {
   data() {
     return {
       supplier: {
+        id: null,
         pib: null,
         naziv: null,
         adresa: null,
@@ -136,11 +149,11 @@ export default {
         .then(() => {
           this.addNotification({
             type: "is-success",
-            message: "Uspešno ste uneli novu kolicinu "
+            message: "Uspešno ste uneli novog dobavljaca "
           });
 
           api
-            .getAllStates()
+            .getAllSuppliers()
             .then(res => {
               this.setTableColumns(res.data.tableColumns);
               this.setTableData(res.data.tableData);
@@ -157,6 +170,9 @@ export default {
         });
     },
     transformSupplier() {
+      if (this.supplier.id === "") {
+        this.supplier.id = null;
+      }
       if (this.supplier.pib === "") {
         this.supplier.pib = null;
       }
